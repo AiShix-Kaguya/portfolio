@@ -1,0 +1,29 @@
+table{
+    font-weight:bold;
+    border: 10px black solid;
+    width: 1500px;
+    height: 400px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.blanc{
+    color: white;
+    background: rgb(152, 0, 182);
+}
+
+.noir{
+    color: black;
+    background: aqua;
+}
+
+.bw{
+    color: white;
+    background: black;
+}
+
+.jour{
+    text-transform: uppercase;
+    color: white;
+    background: rgb(152, 0, 182);
+}

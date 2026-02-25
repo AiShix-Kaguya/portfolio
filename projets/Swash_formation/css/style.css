@@ -1,0 +1,121 @@
+body{
+    background-color: crimson;
+    color: gold;
+    font-family: cursive;
+}
+
+h1{
+    font-size: 40px;
+}
+
+p{
+    font-size: 24px;
+}
+
+.img-gauche{
+    width: 600px;
+    margin-right: 50%;
+}
+
+.img-droite{
+    width: 600px;
+    margin-left: 50%;
+}
+
+a{
+    color:gold;
+    text-decoration: none;
+    transition: all 1s ease-out;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+ul{
+    list-style-type: none;
+    width: 300px;
+    margin: 0;
+}
+
+li{
+    border-bottom: 1px gold solid;
+    display:inline;
+    margin-left:30px;
+     transition: all 0.5s ease-in-out;
+}
+
+li:hover{
+    background: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+main{
+    width: 936px;
+    margin: 0 auto;
+}
+
+.section1{
+    margin-top: 80px;
+    padding-left: 10px;
+    padding-bottom: 2px;
+    animation-duration: 5s;
+    animation-name: slideout;
+}
+
+@keyframes slideout{
+    from{
+        transform: translateY(-500px);
+        opacity: 0;
+    }
+
+    to{
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.section2{
+    background-color: gold;
+    margin-top: 80px;
+}
+
+div{
+    background-color: pink;
+    width: 100px;
+    height: 80px;
+    color:black;
+    float: left;
+    margin-right:20px;
+
+}
+
+.element2{
+    background-color: rgb(192, 248, 255);
+    width: 100px;
+    height: 80px;
+    color:black;
+
+}
+
+img{
+    float: left;
+    transition: filter 10s ease
+}
+
+img:hover{
+    filter: invert(100%);
+}
+
+.carre{
+    width: 300px;
+    height: 300px;
+    background-color: chartreuse;
+    transition: width 10s, height 10s, background-color 10s;
+}
+
+.carre:hover{
+    width: 600px;
+    height: 600px;
+    background-color: rgb(255, 0, 179);
+}
