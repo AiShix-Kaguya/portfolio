@@ -1,0 +1,107 @@
+header{
+    background: url(../images/santorin-header.jpg) left 25% no-repeat;
+    width: 100%;
+    height: 300px;
+    background-size: 100%;
+    border-radius: 0 0 30px 30px;
+    
+}
+
+main{
+    width: 970px;
+    margin: auto 25%;
+    float: left;
+}
+
+h1{
+    color: blue;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-family: "Bitcount Grid Double", system-ui;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size:30px;
+    font-weight: 350;
+  
+}
+
+body{
+    font-family: "Gveret Levin", cursive;
+    font-weight: 400;
+    font-style: normal;
+    margin:0;
+    padding:0;
+}
+
+h2{
+    color: red;
+    text-transform: uppercase;
+}
+
+a{
+    text-decoration: none;
+}
+
+h3{
+    color: blue;
+    margin-top: -20px;
+}
+
+div{
+    float: left;
+    margin-right: 50px;
+    width:28%;
+}
+
+.important{
+    color: red;
+}
+
+ul{
+    list-style-type: none;
+    margin-left: -40px;
+}
+
+.derniere-liste{
+    list-style-type: none;
+    background: red;
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    width:100%;
+    padding-bottom: 30px;
+}
+
+.derniere-liste li{
+    display: inline;
+}
+.derniere-liste li a{
+    color: white;
+}
+
+.image-div{
+    background-size: 100%;
+    width: 100%;
+}
+
+section{
+    float:left;
+}
+
+.principal{
+
+    float:left;
+    margin:0;
+}
+
+footer{
+    float:left;
+    width: 960px;
+    height:20px;
+   /* position:fixed;
+    bottom:20px;*/
+    margin-left:20px;
+    margin-top: 7px;
+}
+
+
