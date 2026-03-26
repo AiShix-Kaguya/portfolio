@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wuthering Waves Team Guide</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{font-family:Orbitron,sans-serif}
+.card:hover{transform:scale(1.03);transition:.2s}
+</style>
+</head>
+<body class="bg-slate-950 text-white">
+<div class="max-w-7xl mx-auto p-6">
+<h1 class="text-5xl font-bold text-cyan-400 mb-6">Wuthering Waves Team Guide</h1>
+<p class="text-gray-400 mb-10">Builder for Wuthering Waves Teams, Weapons & Echoes</p>
+<div class="bg-slate-900 p-8 rounded-2xl mb-14">
+<h2 class="text-3xl text-cyan-400 mb-6">Create a Team</h2>
+<input id="teamName" placeholder="Team name" class="w-full p-3 text-black rounded mb-6" />
+<div class="grid md:grid-cols-3 gap-6 mb-6" id="teamSlots"></div>
+<textarea id="notes" placeholder="Rotation / synergy / explanation" class="w-full p-3 text-black rounded mb-6"></textarea>
+<button onclick="addTeam()" class="bg-cyan-500 px-8 py-3 rounded-xl text-lg">Publish Team</button>
+</div>
+<div class="mb-8">
+<input id="search" placeholder="Search team or character" class="w-full p-3 text-black rounded" />
+</div>
+<div id="teams" class="grid md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+</div>
+<script>
+// FULL CHARACTERS
+const characters=["Rover (Spectro)","Rover (Havoc)","Rover (Aero)","Aalto","Aemeath","Augusta","Baizhi","Brant","Buling","Calcharo","Camellya","Cantarella","Carlotta","Cartethiya","Changli","Chisa","Chixia","Ciaccona","Danjin","Encore","Galbrena","Iuno","Jianxin","Jinhsi","Jiyan","Lingyang","Lumi","Lupa","Luuk Herssen","Lynae","Mornye","Mortefi","Phoebe","Phrolova","Qiuyuan","Roccia","Sanhua","Shorekeeper","Taoqi","Verina","Xiangli Yao","Yangyang","Yinlin","Youhu","Yuanwu","Zani","Zhezhi"];
+
+// FULL WEAPONS
+const weapons=["Ages of Harvest","Blazing Brilliance","Blazing Justice","Bloodpact’s Pledge","Boson Astrolabe","Cosmic Ripples","Daybreaker’s Spine","Defier’s Thorn","Emerald of Genesis","Emerald Sentence","Everbright Polestar","Kumokiri","Laser Shearer","Lustrous Razor","Lux & Umbra","Moongazer’s Sigil","Phasic Homogenizer","Pulsation Bracer","Red Spring","Rime-Draped Sprouts","Starfield Calibrator","Static Mist","Stellar Symphony","Stringmaster","The Last Dance","Thunderflare Dominion","Tragicomedy","Unflickering Valor","Verdant Summit","Verity’s Handle","Whispers of Sirens","Wildfire Mark","Woodland Aria"];
+
+// FULL SETS & UNIQUE ECHOS (nettoyés pour ne garder qu’un seul nom)
+const sets=[
+  {setName:"Rejuvenating Glow", echos:["Whiff Whaff Whiff Whaff","Snip Snap Snip Snap","Fusion Dreadmane","Cruisewing","Hoochief"]},
+  {setName:"Moonlit Clouds", echos:["Whiff Whaff Whiff Whaff","Zig Zag Zig Zag","Cruisewing","Sabyr Boar","Diamondclaw"]},
+  {setName:"Sierra Gale", echos:["Whiff Whaff Whiff Whaff","Chirpuff Chirpuff","Cyan-Feathered Heron","Hooscamp","Dwarf Cassowary"]},
+  {setName:"Molten Rift", echos:["Snip Snap Snip Snap","Baby Viridblaze Saurian","Diamondclaw","Inferno Rider","Fusion Warrior"]},
+  {setName:"Lingering Tunes", echos:["Snip Snap Snip Snap","Zig Zag Zig Zag","Lampylumen Myriad","Hooscamp"]},
+  {setName:"Celestial Light", echos:["Zig Zag Zig Zag","Clang Bang Clang Bang","Cruisewing","H15 Hoartoise"]},
+  {setName:"Freezing Frost", echos:["Clang Bang Clang Bang","Gulpuff Gulpuff","Excarat Excarat","Spectro Prism"]},
+  {setName:"Sun-sinking Eclipse", echos:["Tick Tack Tick Tack","Excarat Excarat","Crownless","Havoc Dreadmane"]},
+  {setName:"Void Thunder", echos:["Baby Viridblaze Saurian","Electro Predator","Aero Predator","Havoc Prism"]},
+  {setName:"Frosty Resolve", echos:["Galescourge Stalker","Chop Chop Leftless","Lottie Lost"]},
+  {setName:"Empyrean Anthem", echos:["Galescourge Stalker","Voltscourge Stalker","Hecate"]},
+  {setName:"Midnight Veil", echos:["Voltscourge Stalker","Lorelei","Impermanence Heron"]},
+  {setName:"Eternal Radiance", echos:["Frostscourge Stalker","Mourning Aix","Golden Junrock"]},
+  {setName:"Tidebreaking Courage", echos:["Aero Drake","Hurriclaw","Diurnus Knight"]},
+  {setName:"Gusts of Welkin", echos:["Aero Drake","Electro Drake","La Guardia"]},
+  {setName:"Flaming Clawprint", echos:["Aero Drake","Electro Drake","Sagittario"]},
+  {setName:"Windward Pilgrimage", echos:["Glacio Drake","Fusion Drake","Pilgrim's Shell"]},
+  {setName:"Thread of Severed Fate", echos:["Nightmare Tick Tack","Havoc Drake","Reminiscence Threnodian - Leviathan"]},
+  {setName:"Law of Harmony", echos:["Nightmare Gulpuff","Nightmare Chirpuff","Golden Junrock"]},
+  {setName:"Crown of Valor", echos:["Nightmare Violet-Feathered Heron","Electro Predator","The False Sovereign"]},
+  {setName:"Flamewing's Shadow", echos:["Nightmare Baby Viridblaze Saurian","Kerasaur","Roseshroom"]},
+  {setName:"Pact of Neonlight Leap", echos:["Flora Drone","Mining Drone","Mining Reindeer"]},
+  {setName:"Rite of Gilded Revelation", echos:["Flora Drone","Twin Nova Collapsar Blade","Flautist"]},
+  {setName:"Sound of True Name", echos:["Flora Drone","Sabercat Reaver","Nameless Explorer"]}
+];
+
+function populateCharactersOrWeapons(select, data){
+  data.forEach(v=>{
+    const o=document.createElement('option'); o.value=v; o.textContent=v; select.appendChild(o);
+  });
+}
+
+function populateSets(select){
+  sets.forEach(s=>{
+    const o=document.createElement('option'); o.value=s.setName; o.textContent=s.setName; select.appendChild(o);
+  });
+}
+
+function populateEchosBySet(select, setName){
+  select.innerHTML='';
+  const setObj = sets.find(s=>s.setName===setName);
+  if(setObj){
+    setObj.echos.forEach(e=>{
+      const o=document.createElement('option'); o.value=e; o.textContent=e; select.appendChild(o);
+    });
+  }
+}
+
+function createCharSlot(idx){
+  const div=document.createElement('div'); div.className='bg-slate-800 p-4 rounded-2xl';
+  const charSelect=document.createElement('select'); charSelect.id='char'+idx; charSelect.className='w-full p-2 text-black rounded mb-2'; populateCharactersOrWeapons(charSelect, characters);
+  const weaponSelect=document.createElement('select'); weaponSelect.id='weapon'+idx; weaponSelect.className='w-full p-2 text-black rounded mb-2'; populateCharactersOrWeapons(weaponSelect, weapons);
+  div.appendChild(charSelect); div.appendChild(weaponSelect);
+  for(let e=1;e<=5;e++){
+    const setSelect=document.createElement('select'); setSelect.id='set'+idx+'_'+e; setSelect.className='w-full p-2 text-black rounded mb-2'; populateSets(setSelect);
+    const echoSelect=document.createElement('select'); echoSelect.id='echo'+idx+'_'+e; echoSelect.className='w-full p-2 text-black rounded mb-2';
+    const statInput=document.createElement('input'); statInput.id='echoStat'+idx+'_'+e; statInput.placeholder='Main stat'; statInput.className='w-full p-2 text-black rounded mb-2';
+    setSelect.addEventListener('change',()=>{populateEchosBySet(echoSelect,setSelect.value);});
+    div.appendChild(setSelect); div.appendChild(echoSelect); div.appendChild(statInput);
+  }
+  return div;
+}
+
+const teamSlots=document.getElementById('teamSlots'); for(let i=1;i<=3;i++){teamSlots.appendChild(createCharSlot(i));}
+
+let teams=JSON.parse(localStorage.getItem('wuwaMetaTeams'))||[];
+function save(){localStorage.setItem('wuwaMetaTeams',JSON.stringify(teams));}
+function addTeam(){
+  const team={name:teamName.value, chars:[], notes:notes.value, votes:0, date:new Date().toLocaleDateString()};
+  for(let i=1;i<=3;i++){
+    const char={c:document.getElementById('char'+i).value, w:document.getElementById('weapon'+i).value, echos:[], stats:document.getElementById('stats'+i).value};
+    for(let e=1;e<=5;e++){
+      const setName=document.getElementById('set'+i+'_'+e).value;
+      const echoName=document.getElementById('echo'+i+'_'+e).value;
+      const mainStat=document.getElementById('echoStat'+i+'_'+e).value;
+      char.echos.push({set:setName, name:echoName, mainStat:mainStat});
+    }
+    team.chars.push(char);
+  }
+  teams.push(team); save(); render(); teamName.value=''; notes.value=''; for(let i=1;i<=3;i++){document.getElementById('stats'+i).value=''; for(let e=1;e<=5;e++){document.getElementById('echoStat'+i+'_'+e).value='';}}
+}
+function vote(i){teams[i].votes++; save(); render();}
+function render(){
+  const q=search.value.toLowerCase();
+  const container=document.getElementById('teams'); container.innerHTML='';
+  teams.filter(t=>t.name.toLowerCase().includes(q)||t.chars.some(c=>c.c.toLowerCase().includes(q))).sort((a,b)=>b.votes-a.votes).forEach((t,i)=>{
+    const card=document.createElement('div'); card.className='bg-slate-900 p-6 rounded-2xl card';
+    card.innerHTML=`<h3 class='text-2xl text-cyan-400 mb-2'>${t.name}</h3><div class='mb-3 text-sm text-gray-400'>Posted ${t.date}</div><ul class='mb-4 space-y-2'>${t.chars.map(c=>`<li><span class='text-cyan-300'>${c.c}</span><br>Weapon: ${c.w}<br>Echoes:<ul>${c.echos.map(e=>`<li>${e.name} (Set: ${e.set}, Main stat: ${e.mainStat})</li>`).join('')}</ul>Stats: ${c.stats}</li>`).join('')}</ul><p class='text-gray-300 mb-4'>${t.notes}</p><button onclick='vote(${i})' class='bg-cyan-600 px-4 py-2 rounded'>⬆ ${t.votes} votes</button>`;
+    container.appendChild(card);
+  });
+}
+search.addEventListener('input',render);
+render();
+</script>
+</body>
+</html>
